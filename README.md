@@ -2,7 +2,7 @@
 a way to quickly share osu! beatmap links  
 
 ## installation  
-install Tampermonkey in your browser's extension store ([google chrome](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo), [mozilla firefox](https://addons.mozilla.org/firefox/addon/tampermonkey)), then click [here](https://raw.githubusercontent.com/ekite57/oscopy/refs/heads/master/oscopy.js) to install it  
+install Tampermonkey in your browser's extension store ([google chrome](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo), [mozilla firefox](https://addons.mozilla.org/firefox/addon/tampermonkey)), then click [here](https://raw.githubusercontent.com/ekite57/oscopy/refs/heads/master/oscopy.user.js) to install it  
 
 > note: on chrome, you'll need to allow user scripts from the "manage extension" menu.
 
