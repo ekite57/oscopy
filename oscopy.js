@@ -19,12 +19,12 @@
             var eFavButton = document.getElementsByClassName('btn-osu-big--beatmapset-header-square-favourite')[0]
             if (document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copydiff').length === 0) {
                 let eCopySetButton = document.createElement('div')
-                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copydiff" type="button" title="copy diff link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
+                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copydiff" type="button" title="copy difficulty link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
                 eFavButton.after(eCopySetButton)
             }
             if (document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copyset').length === 0) {
                 let eCopySetButton = document.createElement('div')
-                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copyset" type="button" title="copy set link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
+                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copyset" type="button" title="copy beatmap link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
                 eFavButton.after(eCopySetButton)
             }
         }
