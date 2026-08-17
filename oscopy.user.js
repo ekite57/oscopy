@@ -16,15 +16,16 @@
         'use strict';
 
         function injectButtons() {
-            var eFavButton = document.getElementsByClassName('btn-osu-big--beatmapset-header-square-favourite')[0]
+            var eFavButton = document.querySelector('.btn-osu-big--beatmapset-header-square-favourite')
+
             if (document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copydiff').length === 0) {
                 let eCopyDiffButton = document.createElement('div')
-                eCopyDiffButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copydiff" type="button" title="copy difficulty link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
+                eCopyDiffButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copydiff" type="button" title="copy diff link (shift to include metadata)"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
                 eFavButton.after(eCopyDiffButton)
             }
             if (document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copyset').length === 0) {
                 let eCopySetButton = document.createElement('div')
-                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copyset" type="button" title="copy beatmap link"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
+                eCopySetButton.innerHTML = '<button class="btn-osu-big btn-osu-big--beatmapset-header-square btn-osu-big--beatmapset-header-square-copyset" type="button" title="copy map link (shift to include metadata)"><span class="btn-osu-big__content btn-osu-big__content--center"><span class="btn-osu-big__icon"><span class="fa-fw fas fa-link"></span></span></span></button>'
                 eFavButton.after(eCopySetButton)
             }
         }
@@ -37,22 +38,50 @@
             return link.replace(/^https?:\/\/osu\.ppy\.sh\/beatmapsets\//, "").replace(/\d+#(osu|taiko|catch|mania)\//, "");
         }
 
-        function copySet(id) {
-            GM_setClipboard("https://osu.ppy.sh/s/" + id)
+        function copyToClipboard(content) {
+            return GM_setClipboard(content);
         }
 
-        function copyDiff(id) {
-            GM_setClipboard("https://osu.ppy.sh/b/" + id)
+        function getTextContent(element) {
+            // holy janky
+            return Array.from(element.childNodes).filter(n => n.nodeType === Node.TEXT_NODE && n.textContent.trim())[0].textContent
+        }
+
+        function getMetadata() {
+            return {
+                // doing URL here to avoid desync between metadata and URL
+                url: window.location.href,
+                title: document.querySelector('.beatmapset-header__details-text--title .beatmapset-header__details-text-link').innerText.trim(),
+                artist: document.querySelector('.beatmapset-header__details-text--artist .beatmapset-header__details-text-link').innerText.trim(),
+                mapper: document.querySelector('.beatmapset-mapping__user').innerText.trim(),
+                diffName: getTextContent(document.querySelector('.beatmapset-header__diff-name'))
+            }
         }
 
         var observer = new MutationObserver(() => {
-            if (document.contains(document.getElementsByClassName('beatmapset-header__buttons')[0])) {
+            if (!window.location.href.includes("beatmapsets")) {
+                observer.disconnect();
+                return;
+            }
+
+            if (document.contains(document.querySelector('.beatmapset-header__buttons'))) {
                 injectButtons();
-                document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copyset')[0].addEventListener("click", () => {
-                    copySet(getSetId(window.location.href))
+                document.querySelector('.btn-osu-big--beatmapset-header-square-copyset').addEventListener("click", (e) => {
+                    let m = getMetadata();
+                    if (e.shiftKey) {
+                        copyToClipboard(`${m.artist} - ${m.title} (${m.mapper}) https://osu.ppy.sh/s/${getSetId(m.url)}`);
+                        return;
+                    }
+                    copyToClipboard(`https://osu.ppy.sh/s/${getSetId(m.url)}`);
                 })
-                document.getElementsByClassName('btn-osu-big--beatmapset-header-square-copydiff')[0].addEventListener("click", () => {
-                    copyDiff(getDiffId(window.location.href))
+                document.querySelector('.btn-osu-big--beatmapset-header-square-copydiff').addEventListener("click", (e) => {
+                    let m = getMetadata();
+                    if (e.shiftKey) {
+                        copyToClipboard(`${m.artist} - ${m.title} (${m.mapper}) [${m.diffName}] https://osu.ppy.sh/b/${getDiffId(m.url)}`);
+                        return;
+                    }
+                    copyToClipboard(`https://osu.ppy.sh/b/${getDiffId(m.url)}`);
+
                 })
                 observer.disconnect();
             }
