@@ -22,7 +22,7 @@
             const eFavButton = document.getElementsByClassName('beatmapset-header__buttons')[0].firstElementChild;
 
             let buttonTemplate = eFavButton.cloneNode(true);
-            buttonTemplate.querySelector('.far.fa-heart')?.setAttribute('class', 'fas fa-link');
+            buttonTemplate.querySelector('.fa-heart')?.setAttribute('class', 'fas fa-link');
 
             let copyDiffButton = buttonTemplate.cloneNode(true);
             copyDiffButton.classList.replace(`${buttonClassPrefix}favourite`, `${buttonClassPrefix}copydiff`);
