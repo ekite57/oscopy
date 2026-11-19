@@ -36,7 +36,7 @@
                 eFavButton.after(copyDiffButton);
             }
 
-            if (!document.querySelector(`.${buttonClassPrefix}copysey`)) {
+            if (!document.querySelector(`.${buttonClassPrefix}copyset`)) {
                 eFavButton.after(copySetButton);
             }
         }
